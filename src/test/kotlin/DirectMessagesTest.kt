@@ -114,4 +114,22 @@ class DirectMessagesTest {
         directMessages.createMessage(1, Messages(1, "Новое сообщение1", 1, false), 1)
         assertEquals(1, directMessages.getUnreadChatsCount())
     }
+
+    @Test
+    fun getChatSomeMessages() {
+        val directMessages = DirectMessages()
+        directMessages.getLastMessages()
+        directMessages.createMessage(1, Messages(1, "Новое сообщение1", 1, true), 1)
+        directMessages.createMessage(1, Messages(2, "Новое сообщение2", 2, true), 1)
+        directMessages.createMessage(1, Messages(1, "Новое сообщение3", 3, true), 1)
+        directMessages.createMessage(1, Messages(2, "Новое сообщение4", 4, true), 1)
+        assertEquals(2, directMessages.getChatSomeMessages(1, 1, 2).size)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun getChatSomeMessagesIllegalArgumentException() {
+        val directMessages = DirectMessages()
+        directMessages.getLastMessages()
+        directMessages.getChatSomeMessages(1, 1, 2)
+    }
 }
