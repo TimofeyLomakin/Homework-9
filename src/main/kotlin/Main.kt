@@ -60,30 +60,35 @@ class DirectMessages {
     }
 
     fun getChatMessages(chatId: Int): List<Messages> {
-        val findChat = chats.find { it.chatId == chatId } ?: throw IllegalArgumentException("Чат не найден")
-        findChat.messages.forEach { it.unread = false }
-        return findChat.messages
+        return chats.asSequence()
+        .filter { it.chatId == chatId }
+            .flatMap { it.messages.asSequence() }
+        .onEach { it.unread = false }
+            .toList()
     }
 
     fun getChatSomeMessages(chatId: Int, userIdMessage: Int, countMessages: Int): List<Messages> {
-        val findChat = chats.find { it.chatId == chatId } ?: throw IllegalArgumentException("Чат не найден")
-        val findMessages = findChat.messages.filter { it.userIdMessage == userIdMessage }
-        val someMessages = findMessages.takeLast(countMessages)
-        someMessages.forEach { it.unread = false }
-        return someMessages
+        return chats.asSequence()
+            .filter { it.chatId == chatId }
+            .flatMap { it.messages.asSequence() }
+            .filter { it.userIdMessage == userIdMessage }
+            .toList()
+            .takeLast(countMessages)
+            .onEach { it.unread = false }
     }
 
     fun getMessagesToUser(chatId: Int, userIdMessage: Int): List<Messages> {
-        val getChat = chats.find { it.chatId == chatId } ?: throw IllegalArgumentException("Чат не найден")
-        val getMessages = getChat.messages.filter { it.userIdMessage == userIdMessage }
-
-        return getMessages
+        return chats.asSequence()
+            .filter { it.chatId == chatId }
+            .flatMap { it.messages.asSequence() }
+            .filter { it.userIdMessage == userIdMessage }
+            .toList()
     }
 
     fun getLastMessages(): List<String> {
-        return chats.map { chats ->
-            chats.messages.lastOrNull()?.textMessage ?: "Нет сообщений"
-        }
+        return chats.asSequence()
+            .map { it.messages.lastOrNull()?.textMessage ?: "Нет сообщений" }
+            .toList()
     }
 
     fun getUnreadChatsCount(): Int {

@@ -73,12 +73,6 @@ class DirectMessagesTest {
         assertEquals(2, directMessages.getChatMessages(1).size)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun getChatMessagesIllegalArgumentException() {
-        val directMessages = DirectMessages()
-        directMessages.getChatMessages(1)
-    }
-
     @Test
     fun getMessagesToUser() {
         val directMessages = DirectMessages()
@@ -86,11 +80,7 @@ class DirectMessagesTest {
         assertEquals(1, directMessages.getMessagesToUser(1, 1).size)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun getMessagesToUserIllegalArgumentException() {
-        val directMessages = DirectMessages()
-        directMessages.getMessagesToUser(1, 1)
-    }
+
 
     @Test
     fun getLastMessages() {
@@ -126,10 +116,4 @@ class DirectMessagesTest {
         assertEquals(2, directMessages.getChatSomeMessages(1, 1, 2).size)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun getChatSomeMessagesIllegalArgumentException() {
-        val directMessages = DirectMessages()
-        directMessages.getLastMessages()
-        directMessages.getChatSomeMessages(1, 1, 2)
-    }
 }
